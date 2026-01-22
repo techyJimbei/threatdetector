@@ -1,18 +1,21 @@
 ## 1. Project Overview
 
-This project is a **sample Threat Detection Engine** built to demonstrate how **unit testing**.
+This project is a **sample Threat Detection Engine** built to demonstrate how **unit testing can be effectively applied to security-style business logic**.
 
 The system simulates a security SDK that:
 
 * Receives environment signals (tags)
 * Detects security threats
 * Calculates overall risk severity
-* Decides mitigation action (dialog, block, crash)
+* Decides mitigation action (allow, dialog, block, crash)
 * Produces a final threat report
 
 The main objective of this project is to:
 
 > Separate business logic from platform-specific dependencies and validate core logic using fast, reliable JVM-based unit tests.
+
+**Special Handling for Clean Devices:**
+If no threat tags are detected, the system performs a **silent allow** operation without showing any warning dialog.
 
 ---
 
@@ -30,6 +33,7 @@ Contains only **plain data models and enums** with no business logic.
 
 Defines mitigation actions supported by the system:
 
+* ALLOW — Silent allow when no threats are detected
 * DIALOG_SKIP — Show warning and allow continuation
 * BLOCKED — Restrict application usage
 * CRASH — Terminate application
@@ -99,11 +103,11 @@ Implements the core detection algorithm.
 
 Applies policy rules that convert severity into final action:
 
-* LOW → DIALOG_SKIP
+* LOW → DIALOG_SKIP (only when threats exist)
 * HIGH → BLOCKED
 * CRITICAL → CRASH
 
-Keeps decision logic independent from detection logic.
+Final decision logic is applied by the service layer to ensure clean devices are silently allowed.
 
 ---
 
@@ -148,13 +152,15 @@ Coordinates the full workflow:
 
 1. Collects tags from SignalProvider
 2. Detects threats using ThreatEngine
-3. Computes overall severity
-4. Applies policy using ThreatPolicy
-5. Returns a ThreatReport
+3. If **no threats are detected**, returns **ALLOW action silently**
+4. Otherwise computes overall severity
+5. Applies policy using ThreatPolicy
+6. Returns a ThreatReport
 
 External callers interact only with this class.
 
 ---
 
 ## 📊 Test Case Excel Sheet
-https://docs.google.com/spreadsheets/d/1h_XgJuF0T7a9H2HWv41TYTIylew7B3DYM3-mS8u-5hQ/edit?usp=sharing
+
+[https://docs.google.com/spreadsheets/d/1h_XgJuF0T7a9H2HWv41TYTIylew7B3DYM3-mS8u-5hQ/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1h_XgJuF0T7a9H2HWv41TYTIylew7B3DYM3-mS8u-5hQ/edit?usp=sharing)
