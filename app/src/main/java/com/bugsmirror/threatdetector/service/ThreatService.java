@@ -35,6 +35,14 @@ public class ThreatService {
         // Step 2: detect threats
         List<Threat> detectedThreats = threatEngine.detectThreats(tags);
 
+        if (detectedThreats.isEmpty()) {
+            return new ThreatReport(
+                    detectedThreats,
+                    Severity.LOW,
+                    Action.ALLOW
+            );
+        }
+
         // Step 3: compute severity
         Severity overallSeverity = threatEngine.computeOverallSeverity(detectedThreats);
 

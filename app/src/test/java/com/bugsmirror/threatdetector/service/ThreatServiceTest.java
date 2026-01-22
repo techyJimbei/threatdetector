@@ -36,4 +36,27 @@ public class ThreatServiceTest {
         // Verify provider was called
         verify(provider).getTags();
     }
+
+    @Test
+    public void runDetection_whenNoTagsProvided_returnsAllowAction() {
+
+        // Create mock SignalProvider
+        SignalProvider provider = mock(SignalProvider.class);
+
+        // Return empty set (no threats)
+        when(provider.getTags()).thenReturn(new HashSet<>());
+
+        ThreatService service = new ThreatService(provider);
+
+        // Run detection
+        ThreatReport report = service.runDetection();
+
+        // Assertions
+        assertEquals(Action.ALLOW, report.getAction());
+        assertTrue(report.getThreats().isEmpty());
+
+        // Verify provider interaction
+        verify(provider).getTags();
+    }
+
 }
