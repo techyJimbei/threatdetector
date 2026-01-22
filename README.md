@@ -1,6 +1,6 @@
 ## 1. Project Overview
 
-This project is a **sample Threat Detection Engine** built to demonstrate how **unit testing can be implemented effectively even when real production code is tightly coupled with device-specific logic**.
+This project is a **sample Threat Detection Engine** built to demonstrate how **unit testing**.
 
 The system simulates a security SDK that:
 
@@ -13,8 +13,6 @@ The system simulates a security SDK that:
 The main objective of this project is to:
 
 > Separate business logic from platform-specific dependencies and validate core logic using fast, reliable JVM-based unit tests.
-
-This approach reflects real-world security SDK design where core detection and policy logic must remain testable independently of Android framework and device APIs.
 
 ---
 
